@@ -31,16 +31,22 @@ public class StackedLayout extends LinearLayout {
 
     public void push(View tile)
     {
+        View mytile = tiles.peek();
+        this.removeView(mytile);
+        tiles.push(tile);
+        this.addView(tiles.push(tile));
 
     }
 
-    public View pop() {
+    public View pop()
+    {
         View popped = null;
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
+        if(tiles.empty() == false)
+        {
+            popped = tiles.pop();
+            this.removeView(popped);
+            this.addView(tiles.peek());
+        }
         return popped;
     }
 
