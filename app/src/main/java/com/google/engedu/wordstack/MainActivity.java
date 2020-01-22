@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private Random random = new Random();
     private StackedLayout stackedLayout;
     private String word1, word2;
+    private Stack<LetterTile> placeTiles = new Stack<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +78,26 @@ public class MainActivity extends AppCompatActivity {
         //word2LinearLayout.setOnDragListener(new DragListener());
     }
 
-    private class TouchListener implements View.OnTouchListener {
+    private class TouchListener implements View.OnTouchListener
+    {
 
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN && !stackedLayout.empty()) {
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            if (event.getAction() == MotionEvent.ACTION_DOWN && !stackedLayout.empty())
+            {
                 LetterTile tile = (LetterTile) stackedLayout.peek();
                 tile.moveToViewGroup((ViewGroup) v);
-                if (stackedLayout.empty()) {
+                if (stackedLayout.empty())
+                {
                     TextView messageBox = (TextView) findViewById(R.id.message_box);
                     messageBox.setText(word1 + " " + word2);
                 }
-                /**
-                 **
-                 **  YOUR CODE GOES HERE
-                 **
-                 **/
+                placeTiles.push(tile);
                 return true;
             }
+
+
             return false;
         }
     }
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setBackgroundColor(LIGHT_GREEN);
+                Stack<LetterTile> placeTiles = new Stack<>();    v.setBackgroundColor(LIGHT_GREEN);
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DRAG_EXITED:
@@ -172,19 +176,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String result = new String(merged);
-        messageBox.setText(word1 + " " +word2 + " " + result);
+        //messageBox.setText(word1 + " " +word2 + " " + result)
 
+        for(int i = result.length() - 1; i >=0; i--)
+        {
+            LetterTile tile = new LetterTile(getApplicationContext(),result.charAt(i));
+            stackedLayout.push(tile);
+        }
+
+        LinearLayout word1LinearLayout = findViewById(R.id.word1);
+        word1LinearLayout.removeAllViews();
+        LinearLayout word2LinearLayout = findViewById(R.id.word2);
+        word2LinearLayout.removeAllViews();
+        stackedLayout.clear();
         return true;
     }
 
+    public boolean onUndo(View view)
+    {
+        LetterTile mytiles;
+       if(!placeTiles.empty())
+       {
+           mytiles = placeTiles.pop();
+           mytiles.moveToViewGroup(stackedLayout);
+       }
 
 
-    public boolean onUndo(View view) {
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
         return true;
     }
 }
