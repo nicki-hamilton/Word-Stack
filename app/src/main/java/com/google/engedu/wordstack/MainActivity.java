@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int WORD_LENGTH = 5;
     public static final int LIGHT_BLUE = Color.rgb(176, 200, 255);
+    public static final int LIGHT_PINK = Color.rgb(255, 105, 180);
     public static final int LIGHT_GREEN = Color.rgb(200, 255, 200);
     private ArrayList<String> words = new ArrayList<>();
     private Random random = new Random();
@@ -71,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         verticalLayout.addView(stackedLayout, 3);
 
         View word1LinearLayout = findViewById(R.id.word1);
-        word1LinearLayout.setOnTouchListener(new TouchListener());
-        //word1LinearLayout.setOnDragListener(new DragListener());
+        //word1LinearLayout.setOnTouchListener(new TouchListener());
+        word1LinearLayout.setOnDragListener(new DragListener());
         View word2LinearLayout = findViewById(R.id.word2);
-        word2LinearLayout.setOnTouchListener(new TouchListener());
-        //word2LinearLayout.setOnDragListener(new DragListener());
+        //word2LinearLayout.setOnTouchListener(new TouchListener());
+        word2LinearLayout.setOnDragListener(new DragListener());
     }
 
     private class TouchListener implements View.OnTouchListener
@@ -108,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
             int action = event.getAction();
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
-                    v.setBackgroundColor(LIGHT_BLUE);
+                    v.setBackgroundColor(LIGHT_PINK);
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DRAG_ENTERED:
-                Stack<LetterTile> placeTiles = new Stack<>();    v.setBackgroundColor(LIGHT_GREEN);
+                   v.setBackgroundColor(LIGHT_GREEN);
                     v.invalidate();
                     return true;
                 case DragEvent.ACTION_DRAG_EXITED:
@@ -131,11 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         TextView messageBox = (TextView) findViewById(R.id.message_box);
                         messageBox.setText(word1 + " " + word2);
                     }
-                    /**
-                     **
-                     **  YOUR CODE GOES HERE
-                     **
-                     **/
+                    placeTiles.push(tile);
                     return true;
             }
             return false;
